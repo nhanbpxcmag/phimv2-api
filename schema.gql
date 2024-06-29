@@ -1,0 +1,128 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type PhimItem {
+  id: Int!
+  ten: String!
+  ten_sub: String
+  mota: String
+  poster_path: String!
+  backdrop_path: String
+  nam: Int!
+  tmdb_id: Int
+  tmdb_type: TypeTMDB
+  link_stream_filePath: String
+  link_stream_fileName: String
+  link_stream_fileExt: String
+  link_sub_filePath: String
+  link_sub_fileName: String
+  link_sub_fileExt: String
+  isActive: Boolean!
+  created_at: Float!
+  updated_at: Float!
+}
+
+"""Type: TV or MOVIE"""
+enum TypeTMDB {
+  """TV"""
+  TV
+
+  """MOVIE"""
+  MOVIE
+}
+
+type PhimDetail {
+  id: Int!
+  ten: String!
+  ten_sub: String
+  mota: String
+  poster_path: String!
+  backdrop_path: String
+  nam: Int!
+  tmdb_id: Int
+  tmdb_type: TypeTMDB
+  link_stream_filePath: String
+  link_stream_fileName: String
+  link_stream_fileExt: String
+  link_sub_filePath: String
+  link_sub_fileName: String
+  link_sub_fileExt: String
+  isActive: Boolean!
+  created_at: Float!
+  updated_at: Float!
+  link_stream: String
+  link_sub: String
+}
+
+type TmdbItem {
+  ten: String!
+  nam: Int!
+  mota: String!
+  poster_path: String!
+  backdrop_path: String!
+  poster_path_tmdb: String!
+  backdrop_path_tmdb: String!
+  release_date: Float!
+  tmdb_id: Float!
+  tmdb_type: TypeTMDB!
+}
+
+type Login {
+  access_token: String!
+}
+
+type Query {
+  getInfoByIdTMDB(tmdb_id: Int!, tmdb_type: TypeTMDB!): TmdbItem!
+  auth_login(password: String!): Login!
+  auth_check: Boolean!
+  phim_list: [PhimItem]
+  phim_list_admin: [PhimItem]
+  phim_by_id(id: Int!): PhimDetail
+}
+
+type Mutation {
+  phim_add(input: PhimAddArgs!): PhimItem!
+  phim_edit(input: PhimEditArgs!): PhimItem!
+  phim_delete(input: PhimDeleteArgs!): Boolean!
+}
+
+input PhimAddArgs {
+  ten: String!
+  ten_sub: String
+  mota: String
+  poster_path: String!
+  backdrop_path: String
+  nam: Int!
+  tmdb_id: Float
+  tmdb_type: TypeTMDB
+  link_stream_filePath: String
+  link_stream_fileName: String
+  link_stream_fileExt: String
+  link_sub_filePath: String
+  link_sub_fileName: String
+  link_sub_fileExt: String
+}
+
+input PhimEditArgs {
+  ten: String!
+  ten_sub: String
+  mota: String
+  poster_path: String!
+  backdrop_path: String
+  nam: Int!
+  tmdb_id: Float
+  tmdb_type: TypeTMDB
+  link_stream_filePath: String
+  link_stream_fileName: String
+  link_stream_fileExt: String
+  link_sub_filePath: String
+  link_sub_fileName: String
+  link_sub_fileExt: String
+  id: Int!
+}
+
+input PhimDeleteArgs {
+  id: Int!
+  del_file: Boolean!
+}
