@@ -72,10 +72,7 @@ export class PhimService {
     ) {
       errors.push('Nhập đầy đủ stream fileName và stream fileExt');
     }
-    if (
-      (item.link_sub_fileName && !item.link_sub_fileExt) ||
-      (!item.link_sub_fileName && item.link_sub_fileExt)
-    ) {
+    if (item.link_sub_fileName && !item.link_sub_fileExt) {
       errors.push('Nhập đầy đủ sub fileName và sub fileExt');
     }
 
