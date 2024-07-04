@@ -73,12 +73,12 @@ type Login {
 }
 
 type Query {
-  getInfoByIdTMDB(tmdb_id: Int!, tmdb_type: TypeTMDB!): TmdbItem!
-  auth_login(password: String!): Login!
-  auth_check: Boolean!
   phim_list: [PhimItem]
   phim_list_admin: [PhimItem]
   phim_by_id(id: Int!): PhimDetail
+  getInfoByIdTMDB(tmdb_id: Int!, tmdb_type: TypeTMDB!): TmdbItem!
+  auth_login(password: String!): Login!
+  auth_check: Boolean!
 }
 
 type Mutation {
