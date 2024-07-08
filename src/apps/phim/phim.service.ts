@@ -7,11 +7,16 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Phim } from './entities/phim.entity';
 import { Repository } from 'typeorm';
-import { PhimDetail, PhimItem } from './models/phim.model';
+import { PhimDetail, PhimDetailShare, PhimItem } from './models/phim.model';
 import { PhimAddArgs, PhimDeleteArgs, PhimEditArgs } from './dto/phimAdd.args';
 import { TmdbService } from '../tmdb/tmdb.service';
 import { TypeTMDB } from '../tmdb/dto/tmdb.args';
-import { generateFilePath, generateFileUrl, isNullUndefined } from 'src/utils';
+import {
+  generateFilePath,
+  generateFileUrl,
+  getPublicIP,
+  isNullUndefined,
+} from 'src/utils';
 import { ERROR } from 'src/configs/constans';
 import { FileService } from '../file/file.service';
 
@@ -37,23 +42,69 @@ export class PhimService {
   async phim_by_id(id: number, host: string): Promise<PhimDetail> {
     let data = await this.phim_db.findOne({ where: { id } });
     host = 'http://' + host + ':' + process.env.PORT;
+    let link_stream = await generateFileUrl({
+      path: data.link_stream_filePath,
+      filename: data.link_stream_fileName,
+      ext: data.link_stream_fileExt,
+      host,
+    });
+    let link_sub = await generateFileUrl(
+      {
+        path: data.link_sub_filePath,
+        filename: data.link_sub_fileName,
+        ext: data.link_sub_fileExt,
+        host,
+      },
+      'sub',
+    );
     return {
       ...data,
-      link_stream: generateFileUrl({
+      link_stream: link_stream.current,
+      link_sub: link_sub.current,
+    };
+  }
+  async phim_share_by_id(id: number, host: string): Promise<PhimDetailShare> {
+    let data = await this.phim_db.findOne({ where: { id } });
+    host = 'http://' + host + ':' + process.env.PORT;
+    let publicIP = await getPublicIP();
+    let link_stream = await generateFileUrl(
+      {
         path: data.link_stream_filePath,
         filename: data.link_stream_fileName,
         ext: data.link_stream_fileExt,
         host,
-      }),
-      link_sub: generateFileUrl(
-        {
-          path: data.link_sub_filePath,
-          filename: data.link_sub_fileName,
-          ext: data.link_sub_fileExt,
-          host,
-        },
-        'sub',
-      ),
+      },
+      'stream',
+      publicIP,
+    );
+    let link_sub = await generateFileUrl(
+      {
+        path: data.link_sub_filePath,
+        filename: data.link_sub_fileName,
+        ext: data.link_sub_fileExt,
+        host,
+      },
+      'sub',
+      publicIP,
+    );
+    let link_sub_download = await generateFileUrl(
+      {
+        path: data.link_sub_filePath,
+        filename: data.link_sub_fileName,
+        ext: data.link_sub_fileExt,
+        host,
+      },
+      'sub_download',
+      publicIP,
+    );
+    return {
+      ...data,
+      link_stream: link_stream.current,
+      link_stream_public: link_stream.public,
+      link_sub: link_sub.current,
+      link_sub_public: link_sub.public,
+      link_sub_download: link_sub_download.current,
+      link_sub_download_public: link_sub_download.public,
     };
   }
   validateItemPhim(item: Phim, tmdb_id?: number) {

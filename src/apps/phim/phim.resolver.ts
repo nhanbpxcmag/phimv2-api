@@ -1,5 +1,5 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { PhimDetail, PhimItem } from './models/phim.model';
+import { PhimDetail, PhimDetailShare, PhimItem } from './models/phim.model';
 import { PhimService } from './phim.service';
 import { PhimAddArgs, PhimDeleteArgs, PhimEditArgs } from './dto/phimAdd.args';
 import { GqlAuthGuard } from 'src/guards/jwt-auth-graphql.guard';
@@ -26,6 +26,13 @@ export class PhimResolver {
     @ReqDecorator() req,
   ): Promise<PhimDetail> {
     return this.service.phim_by_id(id, req.host);
+  }
+  @Query(() => PhimDetailShare, { nullable: true })
+  async phim_share_by_id(
+    @Args('id', { type: () => Int }) id: number,
+    @ReqDecorator() req,
+  ): Promise<PhimDetailShare> {
+    return this.service.phim_share_by_id(id, req.host);
   }
 
   @UseGuards(GqlAuthGuard)

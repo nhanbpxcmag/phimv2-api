@@ -11,6 +11,7 @@ import {
 import { Response } from 'express';
 import { createReadStream, statSync } from 'fs';
 import { FileService } from './file.service';
+import { join, basename, extname } from 'path';
 
 @Controller('file')
 export class FileController {
@@ -76,6 +77,27 @@ export class FileController {
       const file = createReadStream(path_file);
       file.pipe(res);
     } else return '';
+  }
+
+  @Header('Access-Control-Allow-Origin', '*')
+  @Get('sub-download/:path')
+  async sub_down(@Param('path') path: string, @Res() res: Response) {
+    if (
+      !this.service.checkExistingFile(path) ||
+      !this.service.validateSubFormat(path)
+    ) {
+      throw new BadRequestException('File không đúng');
+    }
+    const path_file = await this.service.srtTovtt(path);
+    // const file = createReadStream(path_file);
+    const filename = basename(path);
+    const ext = extname(path);
+    res.set({
+      'Content-Type': 'application/' + ext,
+      'Content-Disposition': 'attachment; filename="' + filename + '"',
+    });
+
+    res.download(path_file);
   }
 
   @Header('Access-Control-Allow-Origin', '*')

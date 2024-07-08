@@ -15,3 +15,26 @@ export class PhimDetail extends Phim {
   @Column({ nullable: true })
   link_sub?: string;
 }
+@ObjectType()
+export class PhimDetailShare extends Phim {
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  link_stream?: string;
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  link_stream_public?: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  link_sub?: string;
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  link_sub_public?: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  link_sub_download?: string;
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  link_sub_download_public?: string;
+}
