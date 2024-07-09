@@ -2,32 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type TmdbItem {
-  ten: String!
-  nam: Int!
-  mota: String!
-  poster_path: String!
-  backdrop_path: String!
-  poster_path_tmdb: String!
-  backdrop_path_tmdb: String!
-  release_date: Float!
-  tmdb_id: Float!
-  tmdb_type: TypeTMDB!
-}
-
-"""Type: TV or MOVIE"""
-enum TypeTMDB {
-  """TV"""
-  TV
-
-  """MOVIE"""
-  MOVIE
-}
-
-type Login {
-  access_token: String!
-}
-
 type PhimItem {
   id: Int!
   ten: String!
@@ -47,6 +21,15 @@ type PhimItem {
   isActive: Boolean!
   created_at: Float!
   updated_at: Float!
+}
+
+"""Type: TV or MOVIE"""
+enum TypeTMDB {
+  """TV"""
+  TV
+
+  """MOVIE"""
+  MOVIE
 }
 
 type PhimDetail {
@@ -99,14 +82,31 @@ type PhimDetailShare {
   link_sub_download_public: String
 }
 
+type TmdbItem {
+  ten: String!
+  nam: Int!
+  mota: String!
+  poster_path: String!
+  backdrop_path: String!
+  poster_path_tmdb: String!
+  backdrop_path_tmdb: String!
+  release_date: Float!
+  tmdb_id: Float!
+  tmdb_type: TypeTMDB!
+}
+
+type Login {
+  access_token: String!
+}
+
 type Query {
-  getInfoByIdTMDB(tmdb_id: Int!, tmdb_type: TypeTMDB!): TmdbItem!
-  auth_login(password: String!): Login!
-  auth_check: Boolean!
   phim_list: [PhimItem]
   phim_list_admin: [PhimItem]
   phim_by_id(id: Int!): PhimDetail
   phim_share_by_id(id: Int!): PhimDetailShare
+  getInfoByIdTMDB(tmdb_id: Int!, tmdb_type: TypeTMDB!): TmdbItem!
+  auth_login(password: String!): Login!
+  auth_check: Boolean!
 }
 
 type Mutation {
