@@ -60,6 +60,7 @@ export class FileController {
   }
   @Get('check/:path')
   async check_file(@Param('path') path: string) {
+    console.log(await this.service.checkExistingFile(path))
     return this.service.checkExistingFile(path);
   }
 
